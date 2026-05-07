@@ -44,7 +44,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
             if (novaEntidade == null)
                 return;
-        
+
             if (!ValidarEntidade(novaEntidade))
             {
                 ValidarMSG.MensagemContinuar();
@@ -55,6 +55,9 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         } while (true);
 
         repositorio.Cadastrar(novaEntidade);
+
+        ValidarMSG.Sucesso($"\"{novaEntidade}\" cadastrado com sucesso.", "Registro");
+        ValidarMSG.MensagemContinuar();
     }
 
     public void Editar()
@@ -92,7 +95,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         {
             novaEntidade = ObterDadosCadastrais();
 
-            if (!ValidarEntidade(novaEntidade))
+            if (!ValidarEntidade(novaEntidade, idSelecionado))
             {
                 ValidarMSG.MensagemContinuar();
                 continue;
@@ -105,6 +108,11 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
         if (!conseguiuEditar)
             return;
+        else
+        {
+            ValidarMSG.Sucesso($"\"{idSelecionado}\" editado com sucesso.", "Registro");
+            ValidarMSG.MensagemContinuar();
+        }
     }
 
     public void Excluir()
@@ -131,6 +139,14 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             if (RepositorioValidacao.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
                 break;
         } while (true);
+        
+        var entidade = repositorio.SelecionarPorId(idSelecionado!);
+
+        if (ValidarVinculos != null && entidade != null && ValidarVinculos(entidade))
+        {
+            ValidarMSG.Erro($"\"{entidade}\" não pode ser excluído pois possui vínculos.", "Registro");
+            ValidarMSG.MensagemContinuar();
+        }
 
         bool conseguiuExcluir = repositorio.Excluir(idSelecionado!, ValidarVinculos);
 
@@ -139,6 +155,11 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             ValidarMSG.Erro("Não foi possível excluir o registro requisitado.", nomeEntidade);
             ValidarMSG.MensagemContinuar();
             return;
+        }
+        else
+        {
+            ValidarMSG.Sucesso($"\"{idSelecionado}\" excluído com sucesso.", "Registro");
+            ValidarMSG.MensagemContinuar();
         }
     }
 
@@ -156,5 +177,5 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
     protected abstract T ObterDadosCadastrais();
     protected virtual Func<T, bool>? ValidarVinculos => null;
-    protected virtual bool ValidarEntidade(T entidade) => true;
+    protected virtual bool ValidarEntidade(T entidade, string? idAtual = null) => true;
 }

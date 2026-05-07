@@ -20,8 +20,6 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
     {
         registros.Add(entidade);
         Salvar();
-        ValidarMSG.Sucesso($"\"{entidade}\" cadastrado com sucesso.", "Registro");
-        ValidarMSG.MensagemContinuar();
     }
 
     public virtual bool Editar(string idSelecionado, T entidadeAtualizada)
@@ -29,16 +27,10 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
         T? registroSelecionado = SelecionarPorId(idSelecionado);
 
         if (registroSelecionado == null)
-        {
-            ValidarMSG.Erro($"\"{entidadeAtualizada}\" não encontrado para edição.", "Registro");
-            ValidarMSG.MensagemContinuar();
             return false;
-        }
 
         registroSelecionado.AtualizarDados(entidadeAtualizada);
-        ValidarMSG.Sucesso($"\"{entidadeAtualizada}\" editado com sucesso.", "Registro");
         Salvar();
-        ValidarMSG.MensagemContinuar();
 
         return true;
     }
@@ -46,24 +38,15 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
     public virtual bool Excluir(string idSelecionado, Func<T, bool>? possuiVinculos = null)
     {
         var entidade = SelecionarPorId(idSelecionado);
+
         if (entidade == null)
-        {
-            ValidarMSG.Erro($"\"{entidade}\" não encontrado para exclusão.", "Registro");
-            ValidarMSG.MensagemContinuar();
             return false;
-        }
 
         if (possuiVinculos != null && possuiVinculos(entidade))
-        {
-            ValidarMSG.Erro($"\"{entidade}\" não pode ser excluído pois possui vínculos.", "Registro");
-            ValidarMSG.MensagemContinuar();
             return false;
-        }
 
         registros.Remove(entidade);
         Salvar();
-        ValidarMSG.Sucesso($"\"{entidade}\" excluído com sucesso.", "Registro");
-        ValidarMSG.MensagemContinuar();
         return true;
     }
 
