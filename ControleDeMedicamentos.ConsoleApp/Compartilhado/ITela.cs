@@ -1,4 +1,4 @@
-namespace ListaDeCompras.ConsoleApp.Compartilhado;
+namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public interface ITela
 {

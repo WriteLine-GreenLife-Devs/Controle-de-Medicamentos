@@ -1,9 +1,7 @@
 using System.Net;
-using ListaDeCompras.ConsoleApp.Utilidades;
-using ListaDeCompras.ConsoleApp.Compartilhado.Validacao;
-using ListaDeCompras.ConsoleApp.ModuloCategoria;
+using ControleDeMedicamentos.ConsoleApp.Utilidades;
 
-namespace ListaDeCompras.ConsoleApp.Compartilhado;
+namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public abstract class TelaBase<T> : ITela where T : EntidadeBase
 {
@@ -21,17 +19,15 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         string nomeMinusculo = nomeEntidade.ToLower();
 
         Console.Clear();
-        CustomText.TextoColorido(
-                                ("---------------------------------\n", null),
-                                ($"Gestão de {nomeEntidade}\n", null),
-                                ("---------------------------------\n", null),
-                                ($"1 - Cadastro de {nomeMinusculo}\n", null),
-                                ($"2 - Edição de {nomeMinusculo}\n", null),
-                                ($"3 - Exclusão de {nomeMinusculo}\n", null),
-                                ($"4 - Visualização de {nomeMinusculo}\n", null),
-                                ("S - Voltar para o início\n", null),
-                                ("---------------------------------", null)
-                                );
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine($"Gestão de {nomeEntidade}");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine($"1 - Cadastro de {nomeMinusculo}");
+        Console.WriteLine($"2 - Edição de {nomeMinusculo}");
+        Console.WriteLine($"3 - Exclusão de {nomeMinusculo}");
+        Console.WriteLine($"4 - Visualização de {nomeMinusculo}");
+        Console.WriteLine("S - Voltar para o início");
+        Console.WriteLine("---------------------------------");
         Console.Write("> ");
         return Console.ReadLine()?.ToUpper();
     }
@@ -51,7 +47,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         
             if (!ValidarEntidade(novaEntidade))
             {
-                Validar.MensagemContinuar();
+                ValidarMSG.MensagemContinuar();
                 continue;
             }
 
@@ -77,12 +73,12 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
             if (string.IsNullOrWhiteSpace(idSelecionado))
             {
-                Validar.Aviso("Operação cancelada.", nomeEntidade);
-                Validar.MensagemContinuar();
+                ValidarMSG.Aviso("Operação cancelada.", nomeEntidade);
+                ValidarMSG.MensagemContinuar();
                 return;
             }
 
-            if (Validar.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
+            if (RepositorioValidacao.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
                 break;
         } while (true);
 
@@ -94,11 +90,11 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
         do
         {
-            novaEntidade = ObterDadosEdicao(parametroAtual!);
+            novaEntidade = ObterDadosCadastrais();
 
             if (!ValidarEntidade(novaEntidade))
             {
-                Validar.MensagemContinuar();
+                ValidarMSG.MensagemContinuar();
                 continue;
             }
 
@@ -127,12 +123,12 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
             if (string.IsNullOrWhiteSpace(idSelecionado))
             {
-                Validar.Aviso("Operação cancelada.", nomeEntidade);
-                Validar.MensagemContinuar();
+                ValidarMSG.Aviso("Operação cancelada.", nomeEntidade);
+                ValidarMSG.MensagemContinuar();
                 return;
             }
 
-            if (Validar.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
+            if (RepositorioValidacao.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
                 break;
         } while (true);
 
@@ -140,8 +136,8 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
         if (!conseguiuExcluir)
         {
-            Validar.Erro("Não foi possível excluir o registro requisitado.", nomeEntidade);
-            Validar.MensagemContinuar();
+            ValidarMSG.Erro("Não foi possível excluir o registro requisitado.", nomeEntidade);
+            ValidarMSG.MensagemContinuar();
             return;
         }
     }
@@ -151,13 +147,11 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
     protected void ExibirCabecalho(string titulo)
     {
         Console.Clear();
-        CustomText.TextoColorido(
-                                ("---------------------------------\n", null),
-                                ($"Gestão de {nomeEntidade}\n", null),
-                                ("---------------------------------\n", null),
-                                ($"{titulo}\n", null),
-                                ("---------------------------------", null)
-                                );
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine($"Gestão de {nomeEntidade}");
+        Console.WriteLine("---------------------------------");
+        Console.WriteLine($"{titulo}");
+        Console.WriteLine("---------------------------------");
     }
 
     protected abstract T ObterDadosCadastrais();

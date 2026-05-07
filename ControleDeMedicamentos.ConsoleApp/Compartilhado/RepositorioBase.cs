@@ -1,7 +1,7 @@
-using ListaDeCompras.ConsoleApp.Compartilhado.Validacao;
 using System.Text.Json;
+using ControleDeMedicamentos.ConsoleApp.Utilidades;
 
-namespace ListaDeCompras.ConsoleApp.Compartilhado;
+namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public abstract class RepositorioBase<T> where T : EntidadeBase
 {
@@ -20,8 +20,8 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
     {
         registros.Add(entidade);
         Salvar();
-        Validar.Sucesso($"\"{entidade}\" cadastrado com sucesso.", "Registro");
-        Validar.MensagemContinuar();
+        ValidarMSG.Sucesso($"\"{entidade}\" cadastrado com sucesso.", "Registro");
+        ValidarMSG.MensagemContinuar();
     }
 
     public virtual bool Editar(string idSelecionado, T entidadeAtualizada)
@@ -30,15 +30,15 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
 
         if (registroSelecionado == null)
         {
-            Validar.Erro($"\"{entidadeAtualizada}\" não encontrado para edição.", "Registro");
-            Validar.MensagemContinuar();
+            ValidarMSG.Erro($"\"{entidadeAtualizada}\" não encontrado para edição.", "Registro");
+            ValidarMSG.MensagemContinuar();
             return false;
         }
 
         registroSelecionado.AtualizarDados(entidadeAtualizada);
-        Validar.Sucesso($"\"{entidadeAtualizada}\" editado com sucesso.", "Registro");
+        ValidarMSG.Sucesso($"\"{entidadeAtualizada}\" editado com sucesso.", "Registro");
         Salvar();
-        Validar.MensagemContinuar();
+        ValidarMSG.MensagemContinuar();
 
         return true;
     }
@@ -48,22 +48,22 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
         var entidade = SelecionarPorId(idSelecionado);
         if (entidade == null)
         {
-            Validar.Erro($"\"{entidade}\" não encontrado para exclusão.", "Registro");
-            Validar.MensagemContinuar();
+            ValidarMSG.Erro($"\"{entidade}\" não encontrado para exclusão.", "Registro");
+            ValidarMSG.MensagemContinuar();
             return false;
         }
 
         if (possuiVinculos != null && possuiVinculos(entidade))
         {
-            Validar.Erro($"\"{entidade}\" não pode ser excluído pois possui vínculos.", "Registro");
-            Validar.MensagemContinuar();
+            ValidarMSG.Erro($"\"{entidade}\" não pode ser excluído pois possui vínculos.", "Registro");
+            ValidarMSG.MensagemContinuar();
             return false;
         }
 
         registros.Remove(entidade);
         Salvar();
-        Validar.Sucesso($"\"{entidade}\" excluído com sucesso.", "Registro");
-        Validar.MensagemContinuar();
+        ValidarMSG.Sucesso($"\"{entidade}\" excluído com sucesso.", "Registro");
+        ValidarMSG.MensagemContinuar();
         return true;
     }
 
