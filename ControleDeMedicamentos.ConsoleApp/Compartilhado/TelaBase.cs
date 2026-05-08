@@ -1,4 +1,4 @@
-using System.Net;
+using ControleDeMedicamentos.ConsoleApp.Compartilhado.Operacoes;
 using ControleDeMedicamentos.ConsoleApp.Utilidades;
 
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
@@ -16,17 +16,31 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
     public virtual string? ObterOpcaoMenu()
     {
+        return ObterOpcaoMenuInterno(true, true, true, true);
+    }
+
+    protected string? ObterOpcaoMenuInterno(bool podeCadastrar, bool podeEditar, bool podeExcluir, bool podeVisualizar)
+    {
         string nomeMinusculo = nomeEntidade.ToLower();
 
         Console.Clear();
         Console.WriteLine("---------------------------------");
         Console.WriteLine($"Gestão de {nomeEntidade}");
         Console.WriteLine("---------------------------------");
-        Console.WriteLine($"1 - Cadastro de {nomeMinusculo}");
-        Console.WriteLine($"2 - Edição de {nomeMinusculo}");
-        Console.WriteLine($"3 - Exclusão de {nomeMinusculo}");
-        Console.WriteLine($"4 - Visualização de {nomeMinusculo}");
-        Console.WriteLine("S - Voltar para o início");
+
+        if (podeCadastrar)
+            Console.WriteLine($"1 - Cadastro de {nomeMinusculo}");
+
+        if (podeEditar)
+            Console.WriteLine($"2 - Edição de {nomeMinusculo}");
+
+        if (podeExcluir)
+            Console.WriteLine($"3 - Exclusão de {nomeMinusculo}");
+
+        if (podeVisualizar)
+            Console.WriteLine($"4 - Visualização de {nomeMinusculo}");
+
+        Console.WriteLine("S - Voltar");
         Console.WriteLine("---------------------------------");
         Console.Write("> ");
         return Console.ReadLine()?.ToUpper();
@@ -54,10 +68,8 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             break;
         } while (true);
 
-        repositorio.Cadastrar(novaEntidade);
-
-        ValidarMSG.Sucesso($"\"{novaEntidade}\" cadastrado com sucesso.", "Registro");
-        ValidarMSG.MensagemContinuar();
+        var resultado = repositorio.Cadastrar(novaEntidade);
+        MsgOperacao.Exibir(resultado, novaEntidade.Id, nomeEntidade, "cadastrado");
     }
 
     public void Editar()
@@ -87,8 +99,6 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
 
         Console.WriteLine("---------------------------------");
 
-        var parametroAtual = repositorio.SelecionarPorId(idSelecionado!);
-
         T novaEntidade;
 
         do
@@ -104,15 +114,8 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             break;
         } while (true);
 
-        bool conseguiuEditar = repositorio.Editar(idSelecionado!, novaEntidade);
-
-        if (!conseguiuEditar)
-            return;
-        else
-        {
-            ValidarMSG.Sucesso($"\"{idSelecionado}\" editado com sucesso.", "Registro");
-            ValidarMSG.MensagemContinuar();
-        }
+        var resultado = repositorio.Editar(idSelecionado!, novaEntidade);
+        MsgOperacao.Exibir(resultado, idSelecionado!, nomeEntidade, "editado");
     }
 
     public void Excluir()
@@ -139,7 +142,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             if (RepositorioValidacao.IdValido(idSelecionado, repositorio.SelecionarTodos(), nomeEntidade))
                 break;
         } while (true);
-        
+
         var entidade = repositorio.SelecionarPorId(idSelecionado!);
 
         if (ValidarVinculos != null && entidade != null && ValidarVinculos(entidade))
@@ -148,19 +151,8 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
             ValidarMSG.MensagemContinuar();
         }
 
-        bool conseguiuExcluir = repositorio.Excluir(idSelecionado!, ValidarVinculos);
-
-        if (!conseguiuExcluir)
-        {
-            ValidarMSG.Erro("Não foi possível excluir o registro requisitado.", nomeEntidade);
-            ValidarMSG.MensagemContinuar();
-            return;
-        }
-        else
-        {
-            ValidarMSG.Sucesso($"\"{idSelecionado}\" excluído com sucesso.", "Registro");
-            ValidarMSG.MensagemContinuar();
-        }
+        var resultado = repositorio.Excluir(idSelecionado!, ValidarVinculos);
+        MsgOperacao.Exibir(resultado, idSelecionado!, nomeEntidade, "excluído");
     }
 
     public abstract void VisualizarTodos(bool deveExibirCabecalho);

@@ -1,13 +1,12 @@
 using System.Text.Json;
-using ControleDeMedicamentos.ConsoleApp.Utilidades;
-
+using ControleDeMedicamentos.ConsoleApp.Compartilhado.Operacoes;
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public abstract class RepositorioBase<T> where T : EntidadeBase
 {
     private readonly string caminhoArquivo;
     private readonly List<T> registros;
-  
+
     public RepositorioBase(string nomeArquivo)
     {
         string pastaDocumentos = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -16,46 +15,52 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
         registros = Carregar();
     }
 
-    public void Cadastrar(T entidade)
+    public ResultadoOperacao Cadastrar(T entidade)
     {
         registros.Add(entidade);
-        Salvar();
+        return Salvar();
     }
 
-    public virtual bool Editar(string idSelecionado, T entidadeAtualizada)
+    public ResultadoOperacao Editar(string idSelecionado, T entidadeAtualizada)
     {
-        T? registroSelecionado = SelecionarPorId(idSelecionado);
+        var registroSelecionado = SelecionarPorId(idSelecionado);
 
         if (registroSelecionado == null)
-            return false;
+            return ResultadoOperacao.NaoEncontrado;
 
         registroSelecionado.AtualizarDados(entidadeAtualizada);
-        Salvar();
-
-        return true;
+        return Salvar();
     }
 
-    public virtual bool Excluir(string idSelecionado, Func<T, bool>? possuiVinculos = null)
+    public virtual ResultadoOperacao Excluir(string idSelecionado, Func<T, bool>? possuiVinculos = null)
     {
         var entidade = SelecionarPorId(idSelecionado);
 
         if (entidade == null)
-            return false;
+            return ResultadoOperacao.NaoEncontrado;
 
         if (possuiVinculos != null && possuiVinculos(entidade))
-            return false;
+            return ResultadoOperacao.PossuiVinculos;
 
         registros.Remove(entidade);
         Salvar();
-        return true;
+        return ResultadoOperacao.Sucesso;
     }
 
     public virtual T? SelecionarPorId(string idSelecionado) => registros.FirstOrDefault(reg => reg.Id == idSelecionado);
 
-    private void Salvar()
+    private ResultadoOperacao Salvar()
     {
-        var json = JsonSerializer.Serialize(registros, new JsonSerializerOptions { WriteIndented = true });
-        File.WriteAllText(caminhoArquivo, json);
+        try
+        {
+            var json = JsonSerializer.Serialize(registros, new JsonSerializerOptions { WriteIndented = true });
+            File.WriteAllText(caminhoArquivo, json);
+            return ResultadoOperacao.Sucesso;
+        }
+        catch
+        {
+            return ResultadoOperacao.ErroValidacao;
+        }
     }
 
     private List<T> Carregar()
