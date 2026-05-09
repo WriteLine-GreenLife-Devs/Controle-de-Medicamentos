@@ -5,8 +5,12 @@ namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 public abstract class TelaBase<T> : ITela where T : EntidadeBase
 {
-    public string nomeEntidade = string.Empty;
+    public string nomeEntidade { get; set; } = string.Empty;
     protected RepositorioBase<T> repositorio;
+    protected virtual bool PodeCadastrar => true;
+    protected virtual bool PodeEditar => true;
+    protected virtual bool PodeExcluir => true;
+    protected virtual bool PodeVisualizar => true;
 
     protected TelaBase(string nomeEntidade, RepositorioBase<T> repositorio)
     {
@@ -14,9 +18,45 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         this.repositorio = repositorio;
     }
 
+    public void ExibirMenuModulo()
+    {
+        while (true)
+        {
+            string? opcao = ObterOpcaoMenu();
+
+            if (opcao == "S")
+                break;
+
+            ProcessarOpcaoMenu(opcao);
+        }
+    }
+
+    private void ProcessarOpcaoMenu(string? opcao)
+    {
+        switch (opcao)
+        {
+            case "1" when PodeCadastrar:
+                Cadastrar();
+                break;
+            case "2" when PodeEditar:
+                Editar();
+                break;
+            case "3" when PodeExcluir:
+                Excluir();
+                break;
+            case "4" when PodeVisualizar:
+                VisualizarTodos(true);
+                break;
+            default:
+                ValidarMSG.Aviso("Opção inválida. Tente novamente.");
+                ValidarMSG.MensagemContinuar();
+                break;
+        }
+    }
+
     public virtual string? ObterOpcaoMenu()
     {
-        return ObterOpcaoMenuInterno(true, true, true, true);
+        return ObterOpcaoMenuInterno(PodeCadastrar, PodeEditar, PodeExcluir, PodeVisualizar);
     }
 
     protected string? ObterOpcaoMenuInterno(bool podeCadastrar, bool podeEditar, bool podeExcluir, bool podeVisualizar)

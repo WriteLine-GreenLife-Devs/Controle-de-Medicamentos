@@ -1,10 +1,11 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
+namespace ControleDeMedicamentos.ConsoleApp.Utilidades;
+
 public class TelaPrincipal
 {
-    private readonly List<TelaBase<EntidadeBase>> telas;
-
-    public TelaPrincipal(List<TelaBase<EntidadeBase>> telas)
+    private readonly List<ITela> telas;
+    public TelaPrincipal(List<ITela> telas)
     {
         this.telas = telas;
     }
@@ -33,16 +34,11 @@ public class TelaPrincipal
             if (int.TryParse(opcao, out int indice) && indice > 0 && indice <= telas.Count)
             {
                 var telaSelecionada = telas[indice - 1];
-
-                string? subOpcao = telaSelecionada.ObterOpcaoMenu();
-
-                switch (subOpcao)
-                {
-                    case "1": telaSelecionada.Cadastrar(); break;
-                    case "2": telaSelecionada.Editar(); break;
-                    case "3": telaSelecionada.Excluir(); break;
-                    case "4": telaSelecionada.VisualizarTodos(true); break;
-                }
+                telaSelecionada.ExibirMenuModulo();
+            }
+            else
+            {
+                Console.WriteLine("Opção inválida!");
             }
         }
     }
