@@ -10,6 +10,7 @@ class Program
         {
             new TelaFornecedor("Fornecedores", new RepositorioFornecedor("fornecedores.json")),
             new TelaMedicamento("Medicamentos", new RepositorioMedicamento("medicamentos.json")),
+            new TelaFuncionario("Funcionários", new RepositorioFuncionario("funcionarios.json"))
         };
 
         var telaPrincipal = new TelaPrincipal(telas);
