@@ -163,6 +163,21 @@ class TelaMedicamento : TelaBase<Medicamento>
 
         if (Nome != "" && QuantidadeEstoque >= 0)
         {
+            var listaMedicamentos = new RepositorioMedicamento("medicamentos.json").SelecionarTodos();
+
+            foreach (var medicamento in listaMedicamentos)
+            {
+                if (medicamento.GetNome().Equals(Nome, StringComparison.OrdinalIgnoreCase) && medicamento.GetFornecedor().GetNome().Equals(Fornecedor.GetNome(), StringComparison.OrdinalIgnoreCase))
+                {
+                    medicamento.SetQuantidadeEstoque(medicamento.GetQuantidadeEstoque() + QuantidadeEstoque);
+                    var repositorioMedicamento = new RepositorioMedicamento("medicamentos.json");
+                    repositorioMedicamento.Editar(medicamento.Id, medicamento);
+                    Console.WriteLine($"Medicamento '{Nome}' já existe. Quantidade em estoque atualizada para {medicamento.GetQuantidadeEstoque()}.");
+                    Thread.Sleep(3000);      
+                    return null;
+                }
+            }
+
             return new Medicamento(Nome, Descricao, QuantidadeEstoque, Fornecedor);
         }
         else
