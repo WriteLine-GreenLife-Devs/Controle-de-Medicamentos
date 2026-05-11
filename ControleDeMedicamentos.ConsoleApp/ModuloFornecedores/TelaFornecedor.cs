@@ -27,7 +27,7 @@ class TelaFornecedor : TelaBase<Fornecedor>
 
                 foreach (var fornecedor in listaFornecedores)
                 {
-                    Console.WriteLine($"{posicao} - {fornecedor.GetNome()}");
+                    Console.WriteLine($"{posicao} - {fornecedor.GetNome()} - Telefone: {fornecedor.GetTelefone()} - CNPJ: {fornecedor.GetCNPJ()}");
                     posicao++;
                 }
             }
@@ -38,7 +38,6 @@ class TelaFornecedor : TelaBase<Fornecedor>
 
             Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey(true);
-            Console.Clear();
 
         }
     }

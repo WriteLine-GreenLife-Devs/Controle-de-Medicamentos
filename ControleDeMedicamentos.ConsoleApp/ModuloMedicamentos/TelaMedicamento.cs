@@ -29,12 +29,12 @@ class TelaMedicamento : TelaBase<Medicamento>
 
                     if (medicamento.GetQuantidadeEstoque() < 20)
                     {
-                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Em Falta! Estoque: {medicamento.GetQuantidadeEstoque()}");
+                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Em Falta! Estoque: {medicamento.GetQuantidadeEstoque()} - Fornecedor: {medicamento.GetFornecedor().GetNome()} - Descrição: {medicamento.GetDescricao()}");
                         posicao++;
                     }
                     else
                     {
-                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Estoque: {medicamento.GetQuantidadeEstoque()}");
+                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Estoque: {medicamento.GetQuantidadeEstoque()} - Fornecedor: {medicamento.GetFornecedor().GetNome()} - Descrição: {medicamento.GetDescricao()}");
                         posicao++;
                     }
 
@@ -48,7 +48,6 @@ class TelaMedicamento : TelaBase<Medicamento>
 
             Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey(true);
-            Console.Clear();
 
         }
     }

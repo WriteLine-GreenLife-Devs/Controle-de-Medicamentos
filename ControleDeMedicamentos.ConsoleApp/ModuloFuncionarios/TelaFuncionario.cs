@@ -37,8 +37,6 @@ class TelaFuncionario : TelaBase<Funcionario>
 
             Console.WriteLine("\nPressione qualquer tecla para continuar...");
             Console.ReadKey(true);
-            Console.Clear();
-
         }
     }
 
