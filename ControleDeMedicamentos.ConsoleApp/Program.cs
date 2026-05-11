@@ -8,7 +8,7 @@ class Program
 
         var telas = new List<ITela>()
         {
-
+            new TelaFornecedor("Fornecedores", new RepositorioFornecedor()),
         };
 
         var telaPrincipal = new TelaPrincipal(telas);

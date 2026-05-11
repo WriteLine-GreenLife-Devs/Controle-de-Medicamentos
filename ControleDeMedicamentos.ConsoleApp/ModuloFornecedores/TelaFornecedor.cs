@@ -1,10 +1,10 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
-class TelaFonecedor : TelaBase<Fornecedor>
+class TelaFornecedor : TelaBase<Fornecedor>
 {
 
     #region Construtor
-    public TelaFonecedor(string nomeEntidade, RepositorioBase<Fornecedor> repositorio) : base(nomeEntidade, repositorio)
+    public TelaFornecedor(string nomeEntidade, RepositorioBase<Fornecedor> repositorio) : base(nomeEntidade, repositorio)
     {
     }
 
