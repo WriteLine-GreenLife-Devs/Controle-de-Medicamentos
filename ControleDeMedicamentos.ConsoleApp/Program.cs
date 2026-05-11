@@ -12,7 +12,7 @@ class Program
             new TelaFornecedor("Fornecedores", new RepositorioFornecedor("fornecedores")),
             new TelaMedicamento("Medicamentos", new RepositorioMedicamento("medicamentos")),
             new TelaFuncionario("Funcionários", new RepositorioFuncionario("funcionarios")),
-            new TelaPaciente("Pacientes", new RepositorioPaciente())
+            new TelaPaciente("Pacientes", new RepositorioPaciente("pacientes"))
         };
 
         var telaPrincipal = new TelaPrincipal(telas);

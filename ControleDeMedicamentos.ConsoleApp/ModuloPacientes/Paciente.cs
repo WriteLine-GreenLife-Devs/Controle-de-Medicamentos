@@ -9,6 +9,10 @@ public class Paciente : EntidadeBase
     public string CPF { get; set; } = string.Empty;
     public string CNS { get; set; } = string.Empty;
     public string Telefone { get; set; } = string.Empty;
+    public string GetCPF()
+    {
+        return CPF;
+    }
     public override void AtualizarDados(EntidadeBase entidadeAtualizada)
     {
         var pacienteAtualizado = (Paciente)entidadeAtualizada;

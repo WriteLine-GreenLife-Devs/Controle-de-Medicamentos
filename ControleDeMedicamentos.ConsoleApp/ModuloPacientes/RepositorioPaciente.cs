@@ -2,7 +2,9 @@ using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
 namespace ControleDeMedicamentos.ConsoleApp.ModuloPacientes;
 
-public class RepositorioPaciente : RepositorioBase<Paciente>
+class RepositorioPaciente : RepositorioBase<Paciente>
 {
-    public RepositorioPaciente() : base("Pacientes") { }
+    public RepositorioPaciente(string nomeArquivo) : base(nomeArquivo)
+    {
+    }
 }
