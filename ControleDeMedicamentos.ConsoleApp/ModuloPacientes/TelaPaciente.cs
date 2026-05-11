@@ -40,6 +40,9 @@ public class TelaPaciente : TelaBase<Paciente>
             if (verifica == false)
             {
                 Console.WriteLine("Tamanho do Nome do Fornecedor deve conter entre 3 à 100 caracteres! Tente Novamente.");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
                 return null;
             }
 
@@ -47,6 +50,15 @@ public class TelaPaciente : TelaBase<Paciente>
             string cpf = Console.ReadLine() ?? string.Empty;
 
             cpf = VerificarCPF(cpf);
+
+            if (cpf == "")
+            {
+                Console.WriteLine("CPF inválido, por favor tente novamente!");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
+                return null;
+            }
 
             verifica = VerificarCPFExistente(cpf);
 
@@ -74,6 +86,14 @@ public class TelaPaciente : TelaBase<Paciente>
             string telefone = Console.ReadLine() ?? string.Empty;
 
             telefone = VerificarTelefoneP(telefone);
+
+            if (telefone == "")
+            {
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
+                return null;
+            }
 
             return new Paciente { Nome = nome, CPF = cpf, CNS = cns, Telefone = telefone };
         }
