@@ -130,6 +130,9 @@ class TelaFuncionario : TelaBase<Funcionario>
             if (verifica == false)
             {
                 Console.WriteLine("Tamanho do Nome do Funcionário deve conter entre 3 à 100 caracteres! Tente Novamente.");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
                 return null;
             }
 
@@ -138,6 +141,14 @@ class TelaFuncionario : TelaBase<Funcionario>
 
             Telefone = VerificarTelefone(Telefone);
 
+            if (Telefone == "")
+            {
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
+                return null;
+            }
+
             Console.Write($"Digite o CPF do Funcionário {Nome}: ");
             CPF = Console.ReadLine() ?? "";
 
@@ -145,9 +156,12 @@ class TelaFuncionario : TelaBase<Funcionario>
 
             verifica = VerificarCPFExistente(CPF);
 
-            if(verifica == true)
+            if (verifica == true)
             {
                 Console.WriteLine("CPF já existente, por favor tente novamente!");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
                 return null;
             }
 
