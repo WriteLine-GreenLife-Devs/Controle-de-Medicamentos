@@ -31,7 +31,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         }
     }
 
-    private void ProcessarOpcaoMenu(string? opcao)
+    public virtual void ProcessarOpcaoMenu(string? opcao)
     {
         switch (opcao)
         {
