@@ -121,16 +121,16 @@ class TelaFornecedor : TelaBase<Fornecedor>
         string Telefone = "";
         string CNPJ = "";
 
-        bool verificaNome = false;
+        bool verifica = false;
 
         try
         {
             Console.Write("Digite o nome do Fornecedor: ");
             Nome = Console.ReadLine() ?? "";
 
-            verificaNome = ValidarTamanhoNome(Nome, 3, 100);
+            verifica = ValidarTamanhoNome(Nome, 3, 100);
 
-            if (verificaNome == false)
+            if (verifica == false)
             {
                 Console.WriteLine("Tamanho do Nome do Fornecedor deve conter entre 3 à 100 caracteres! Tente Novamente.");
                 return null;
@@ -145,6 +145,14 @@ class TelaFornecedor : TelaBase<Fornecedor>
             CNPJ = Console.ReadLine() ?? "";
 
             CNPJ = VerificarCNPJ(CNPJ);
+
+            verifica = VerificarCNPJExistente(CNPJ);
+
+            if(verifica == true)
+            {
+                Console.WriteLine("CNPJ já existente, por favor tente novamente!");
+                return null;
+            }
 
         }
         catch (System.Exception)

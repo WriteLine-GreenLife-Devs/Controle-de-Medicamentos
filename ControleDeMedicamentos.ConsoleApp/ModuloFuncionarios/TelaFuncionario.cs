@@ -120,16 +120,16 @@ class TelaFuncionario : TelaBase<Funcionario>
         string Telefone = "";
         string CPF = "";
 
-        bool verificaNome = false;
+        bool verifica = false;
 
         try
         {
             Console.Write("Digite o nome do Funcionário: ");
             Nome = Console.ReadLine() ?? "";
 
-            verificaNome = ValidarTamanhoNome(Nome, 3, 100);
+            verifica = ValidarTamanhoNome(Nome, 3, 100);
 
-            if (verificaNome == false)
+            if (verifica == false)
             {
                 Console.WriteLine("Tamanho do Nome do Funcionário deve conter entre 3 à 100 caracteres! Tente Novamente.");
                 return null;
@@ -144,6 +144,14 @@ class TelaFuncionario : TelaBase<Funcionario>
             CPF = Console.ReadLine() ?? "";
 
             CPF = VerificarCPF(CPF);
+
+            verifica = VerificarCPFExistente(CPF);
+
+            if(verifica == true)
+            {
+                Console.WriteLine("CPF já existente, por favor tente novamente!");
+                return null;
+            }
 
         }
         catch (System.Exception)
