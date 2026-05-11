@@ -1,4 +1,5 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using ControleDeMedicamentos.ConsoleApp.Compartilhado.Operacoes;
 namespace ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
@@ -53,7 +54,14 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
     {
         try
         {
-            var json = JsonSerializer.Serialize(registros, new JsonSerializerOptions { WriteIndented = true });
+            var opcoes = new JsonSerializerOptions 
+            { 
+                WriteIndented = true,
+                PropertyNamingPolicy = null,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never,
+                IncludeFields = true
+            };
+            var json = JsonSerializer.Serialize(registros, opcoes);
             File.WriteAllText(caminhoArquivo, json);
             return ResultadoOperacao.Sucesso;
         }
@@ -69,7 +77,13 @@ public abstract class RepositorioBase<T> where T : EntidadeBase
             return new List<T>();
 
         var json = File.ReadAllText(caminhoArquivo);
-        return JsonSerializer.Deserialize<List<T>>(json) ?? new List<T>();
+        var opcoes = new JsonSerializerOptions 
+        { 
+            PropertyNamingPolicy = null,
+            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.Never,
+            IncludeFields = true
+        };
+        return JsonSerializer.Deserialize<List<T>>(json, opcoes) ?? new List<T>();
     }
 
     public List<T> SelecionarTodos() => registros;
