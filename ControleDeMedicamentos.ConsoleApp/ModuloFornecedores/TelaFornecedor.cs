@@ -132,6 +132,9 @@ class TelaFornecedor : TelaBase<Fornecedor>
             if (verifica == false)
             {
                 Console.WriteLine("Tamanho do Nome do Fornecedor deve conter entre 3 à 100 caracteres! Tente Novamente.");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
                 return null;
             }
 
@@ -147,9 +150,12 @@ class TelaFornecedor : TelaBase<Fornecedor>
 
             verifica = VerificarCNPJExistente(CNPJ);
 
-            if(verifica == true)
+            if (verifica == true)
             {
                 Console.WriteLine("CNPJ já existente, por favor tente novamente!");
+                Thread.Sleep(3000);
+                while (Console.KeyAvailable) Console.ReadKey(true);
+                Console.Clear();
                 return null;
             }
 
@@ -165,7 +171,7 @@ class TelaFornecedor : TelaBase<Fornecedor>
 
         if (Nome != "" && CNPJ != "" && Telefone != "")
         {
-            return new Fornecedor{Nome = Nome, Telefone = Telefone, CNPJ = CNPJ};
+            return new Fornecedor { Nome = Nome, Telefone = Telefone, CNPJ = CNPJ };
         }
         else
         {

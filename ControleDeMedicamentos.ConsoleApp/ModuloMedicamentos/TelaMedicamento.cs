@@ -133,12 +133,18 @@ class TelaMedicamento : TelaBase<Medicamento>
                     else
                     {
                         Console.WriteLine("Número inválido. Tente Novamente!");
+                        Thread.Sleep(3000);
+                        while (Console.KeyAvailable) Console.ReadKey(true);
+                        Console.Clear();
                         return null;
                     }
                 }
                 catch (System.Exception)
                 {
                     Console.WriteLine("Número inválido. Tente Novamente!");
+                    Thread.Sleep(3000);
+                    while (Console.KeyAvailable) Console.ReadKey(true);
+                    Console.Clear();
                     return null;
                 }
             }
@@ -173,7 +179,7 @@ class TelaMedicamento : TelaBase<Medicamento>
                     var repositorioMedicamento = new RepositorioMedicamento("medicamentos.json");
                     repositorioMedicamento.Editar(medicamento.Id, medicamento);
                     Console.WriteLine($"Medicamento '{Nome}' já existe. Quantidade em estoque atualizada para {medicamento.GetQuantidadeEstoque()}.");
-                    Thread.Sleep(3000);      
+                    Thread.Sleep(3000);
                     return null;
                 }
             }

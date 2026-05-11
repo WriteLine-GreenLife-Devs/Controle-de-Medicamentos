@@ -145,6 +145,9 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         {
             novaEntidade = ObterDadosCadastrais();
 
+            if (novaEntidade == null)
+                return;
+
             if (!ValidarEntidade(novaEntidade, idSelecionado))
             {
                 ValidarMSG.MensagemContinuar();
