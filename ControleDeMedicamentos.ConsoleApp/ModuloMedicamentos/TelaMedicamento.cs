@@ -26,8 +26,19 @@ class TelaMedicamento : TelaBase<Medicamento>
 
                 foreach (var medicamento in listaMedicamentos)
                 {
-                    Console.WriteLine($"{posicao} - {medicamento.GetNome()}");
-                    posicao++;
+
+                    if (medicamento.GetQuantidadeEstoque() < 20)
+                    {
+                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Em Falta! Estoque: {medicamento.GetQuantidadeEstoque()}");
+                        posicao++;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"{posicao} - {medicamento.GetNome()} - Estoque: {medicamento.GetQuantidadeEstoque()}");
+                        posicao++;
+                    }
+
+
                 }
             }
             else
