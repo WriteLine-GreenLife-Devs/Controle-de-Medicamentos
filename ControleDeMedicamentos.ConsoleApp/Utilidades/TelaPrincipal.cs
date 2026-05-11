@@ -4,9 +4,9 @@ namespace ControleDeMedicamentos.ConsoleApp.Utilidades;
 
 public class TelaPrincipal
 {
-    private readonly List<ITela> telas;
+    private readonly List<TelaBase<EntidadeBase>> telas;
 
-    public TelaPrincipal(List<ITela> telas)
+    public TelaPrincipal(List<TelaBase<EntidadeBase>> telas)
     {
         this.telas = telas;
     }

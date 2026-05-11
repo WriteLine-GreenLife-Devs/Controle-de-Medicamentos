@@ -1,15 +1,13 @@
 ﻿using ControleDeMedicamentos.ConsoleApp.Compartilhado;
-using ControleDeMedicamentos.ConsoleApp.ModuloPacientes;
-using ControleDeMedicamentos.ConsoleApp.Utilidades;
 
 class Program
 {
     static void Main(string[] args)
     {
-        var telas = new List<ITela>()
+
+        var telas = new List<TelaBase<EntidadeBase>>()
         {
-            new TelaPaciente("Pacientes", new RepositorioPaciente()),
-        
+
         };
 
         var telaPrincipal = new TelaPrincipal(telas);
