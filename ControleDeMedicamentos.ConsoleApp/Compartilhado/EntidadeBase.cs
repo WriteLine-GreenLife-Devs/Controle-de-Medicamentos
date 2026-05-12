@@ -4,14 +4,15 @@ namespace ControleDeMedicamentos.ConsoleApp.Compartilhado
 {
     public abstract class EntidadeBase
     {
-        public string Id { get; private set; } = string.Empty;
+        public string Id { get; set; } = string.Empty;
 
         public EntidadeBase()
         {
-            Id = Convert
-                    .ToHexString(RandomNumberGenerator.GetBytes(3))
-                    .ToUpper()
-                    .Substring(0, 5);
+            if (string.IsNullOrEmpty(Id))
+                Id = Convert
+                        .ToHexString(RandomNumberGenerator.GetBytes(3))
+                        .ToUpper()
+                        .Substring(0, 5);
         }
 
         public abstract void AtualizarDados(EntidadeBase entidadeAtualizada);

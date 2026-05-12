@@ -59,7 +59,7 @@ public abstract class TelaBase<T> : ITela where T : EntidadeBase
         return ObterOpcaoMenuInterno(PodeCadastrar, PodeEditar, PodeExcluir, PodeVisualizar);
     }
 
-    protected string? ObterOpcaoMenuInterno(bool podeCadastrar, bool podeEditar, bool podeExcluir, bool podeVisualizar)
+    protected virtual string? ObterOpcaoMenuInterno(bool podeCadastrar, bool podeEditar, bool podeExcluir, bool podeVisualizar)
     {
         string nomeMinusculo = nomeEntidade.ToLower();
 
