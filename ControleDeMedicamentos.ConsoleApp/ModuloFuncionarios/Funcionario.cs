@@ -1,6 +1,6 @@
 using ControleDeMedicamentos.ConsoleApp.Compartilhado;
 
-class Funcionario : EntidadeBase
+public class Funcionario : EntidadeBase
 {
     public string Nome = string.Empty;
     public string Telefone = string.Empty;
